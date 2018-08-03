@@ -6,7 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "webpack",
-        "package": "kintone-plugin-packer --ppk private ppk --out dist/plugin.zip plugin",
+        "package": "kintone-plugin-packer --ppk private.ppk --out dist/plugin.zip plugin",
         "build:package": "npm run build && npm run package",
         "watch": "webpack --env.watch",
         "lint": "eslint ./src/js",

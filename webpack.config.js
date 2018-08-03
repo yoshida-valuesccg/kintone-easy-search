@@ -1,7 +1,5 @@
-// const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const KintonePlugin = require("@kintone/webpack-plugin-kintone-plugin");
 
 module.exports = [
     {
@@ -45,12 +43,7 @@ module.exports = [
                 }
             ]
         },
-        plugins: [
-            // new webpack.optimize.UglifyJsPlugin({
-            //     include: ['desktop', 'config'],
-            //     minify: true
-            // })
-        ]
+        plugins: []
     },
     {
         entry: {
@@ -76,20 +69,7 @@ module.exports = [
             ]
         },
         plugins: [
-            // new webpack.optimize.UglifyJsPlugin({
-            //     include: ['desktop', 'config'],
-            //     minify: true
-            // }),
             new ExtractTextPlugin('[name].css')
-        ]
-    },
-    {
-        plugins: [
-            new KintonePlugin({
-                manifestJSONPath: "./plugin/manifest.json",
-                privateKeyPath: "./private.ppk",
-                pluginZipPath: "./dist/plugin.zip"
-            })
         ]
     }
 ];
