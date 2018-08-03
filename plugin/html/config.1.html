@@ -1,0 +1,74 @@
+<div id="config">
+    <div class="kintoneplugin-row">
+        <div class="kintoneplugin-label">検索対象のフィールドを選択してください。</div>
+        <table class="kintoneplugin-table">
+            <thead>
+                <tr>
+                    <th class="kintoneplugin-table-th" style="width: 30px;text-align: center;">
+                        <span class="title"></span>
+                    </th>
+                    <th class="kintoneplugin-table-th">
+                        <span class="title">フィールド名</span>
+                    </th>
+                    <th class="kintoneplugin-table-th">
+                        <span class="title">フィールドコード</span>
+                    </th>
+                    <th class="kintoneplugin-table-th">
+                        <span class="title">フィールド種類</span>
+                    </th>
+                    <th class="kintoneplugin-table-th">
+                        <span class="title">テーブル・関連レコード一覧</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(field, index) in fields">
+                    <td>
+                        <div class="kintoneplugin-table-td-control">
+                            <div class="kintoneplugin-table-td-control-value">
+                                <div class="kintoneplugin-input-checkbox">
+                                    <span class="kintoneplugin-input-checkbox-item">
+                                        <input type="checkbox" name="checkbox" id="">
+                                        <label for=""></label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="kintoneplugin-table-td-control">
+                            <div class="kintoneplugin-table-td-control-value">
+                                {{field.label}}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="kintoneplugin-table-td-control">
+                            <div class="kintoneplugin-table-td-control-value">
+                                {{field.code}}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="kintoneplugin-table-td-control">
+                            <div class="kintoneplugin-table-td-control-value">
+                                {{fieldTypes[field.type].name}}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="kintoneplugin-table-td-control">
+                            <div class="kintoneplugin-table-td-control-value">
+                                {{field.subTable ? field.subTable.code : field.referenceTable ? field.referenceTable.label : ''}}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="kintoneplugin-row">
+        <button class="kintoneplugin-button-dialog-ok" v-on:click="submit">保存</button>
+        <button class="kintoneplugin-button-dialog-cancel" v-on:click="cancel">キャンセル</button>
+    </div>
+</div>

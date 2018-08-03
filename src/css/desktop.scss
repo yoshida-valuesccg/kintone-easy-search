@@ -1,0 +1,76 @@
+@charset "UTF-8";
+
+.kintone-app-headermenu-space {
+    #easy-search-form {
+        display: inline-block;
+        margin-right: 8px;
+        line-height: 1.5;
+        vertical-align: top;
+    }
+
+    .easy-search-outer {
+        position: relative;
+        width: 360px;
+    }
+
+    .easy-search-text {
+        font-size: 14px;
+        height: 48px;
+        padding-right: 50px;
+        padding: 0 48px 0 8px;
+        min-width: 160px;
+        width: 313px;
+        margin: 0;
+        border: 1px solid #e3e7e8;
+        color: #888;
+        background-color: #fff;
+        box-shadow: 2px 2px 4px #f5f5f5 inset, -2px -2px 4px #f5f5f5 inset;
+        box-sizing: border-box;
+    }
+
+    .easy-search-text:focus {
+        background-color: #e2f2fe;
+        box-shadow: none;
+        color: #000;
+    }
+
+    button.easy-search-clear {
+        width: 48px;
+        height: 48px;
+        position: absolute;
+        top: 0;
+        right: 48px;
+        box-sizing: border-box;
+        border: none;
+        background-image: url(https://static.cybozu.com/contents/k/image/argo/close.png);
+        background-color: transparent;
+        background-position: center center;
+        background-repeat: no-repeat;
+        cursor: pointer;
+
+        // for conflict
+        min-width: 48px;
+        margin: 0;
+        padding: 0;
+    }
+
+    button.easy-search-button {
+        width: 48px;
+        height: 48px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        box-sizing: border-box;
+        border: 1px solid #e3e7e8;
+        background-image: url(https://static.cybozu.com/contents/k/image/argo/form/search.png);
+        background-color: #f7f9fa;
+        background-position: center center;
+        background-repeat: no-repeat;
+        cursor: pointer;
+
+        // for conflict
+        min-width: 48px;
+        margin: 0;
+        padding: 0;
+    }
+}

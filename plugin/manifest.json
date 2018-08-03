@@ -1,0 +1,38 @@
+{
+    "manifest_version": 1,
+    "version": 1,
+    "type": "APP",
+    "name": {
+        "ja": "かんたん検索プラグイン",
+        "en": "Easy Search Plugin"
+    },
+    "description": {
+        "ja": "かんたん検索ボタンを設置するプラグイン",
+        "en": "Place Easy Search Button"
+    },
+    "icon": "img/icon.png",
+    "desktop": {
+        "js": [
+            "js/desktop.js"
+        ],
+        "css": [
+            "css/desktop.css"
+        ]
+    },
+    "config": {
+        "html": "html/config.html",
+        "js": [
+            "lib/js/polyfill.min.js",
+            "https://js.cybozu.com/jquery/3.2.1/jquery.min.js",
+            "https://js.cybozu.com/vuejs/v2.5.16/vue.min.js",
+            "https://js.cybozu.com/datatables/v1.10.16/js/jquery.dataTables.min.js",
+            "js/config.js"
+        ],
+        "css": [
+            "https://js.cybozu.com/jqueryui/1.12.1/themes/smoothness/jquery-ui.css",
+            "lib/css/51-modern-default.css",
+            "css/config.css"
+        ],
+        "required_params": []
+    }
+}
