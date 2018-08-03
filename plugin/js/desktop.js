@@ -127,7 +127,7 @@ function getProperties(appId) {
             var properties = _ref.properties;
             return properties;
         }).catch(function (error) {
-            return {};
+            return [];
         });
     }
 
@@ -210,14 +210,13 @@ kintone.events.on('app.record.index.show', function (event) {
 
                     promise = getProperties(appId).then(function (properties) {
 
-                        var re = new RegExp(keyword);
-
                         var prop = properties.find(function (prop) {
                             return prop.code === code && prop.type === type;
                         });
+
                         if (prop) {
                             var o = prop.options.filter(function (option) {
-                                return option.match(re);
+                                return option.indexOf(keyword) > -1;
                             });
                             if (o.length > 0) {
                                 query.param(fieldCode, 'in', o);

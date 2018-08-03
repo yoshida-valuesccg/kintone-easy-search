@@ -44,7 +44,7 @@ function getProperties(appId) {
     if (!propertiesCache[appIdStr]) {
         propertiesCache[appIdStr] = kintone.api('/k/v1/form', 'GET', { app: appId })
             .then(({ properties }) => properties)
-            .catch((error) => ({}));
+            .catch((error) => []);
     }
 
     return propertiesCache[appIdStr];
@@ -127,11 +127,10 @@ kintone.events.on('app.record.index.show', (event) => {
 
                     promise = getProperties(appId).then((properties) => {
 
-                        const re = new RegExp(keyword);
-
                         let prop = properties.find((prop) => prop.code === code && prop.type === type);
+
                         if (prop) {
-                            let o = prop.options.filter((option) => option.match(re));
+                            let o = prop.options.filter((option) => option.indexOf(keyword) > -1);
                             if (o.length > 0) {
                                 query.param(fieldCode, 'in', o);
                             }
