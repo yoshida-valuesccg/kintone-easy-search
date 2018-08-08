@@ -1,6 +1,6 @@
 {
     "name": "kintone-easy-search",
-    "version": "1.0.0",
+    "version": "0.1.1",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -13,7 +13,7 @@
         "fix": "eslint ./src/js --fix"
     },
     "author": "tonio0720",
-    "license": "ISC",
+    "license": "MIT",
     "devDependencies": {
         "@kintone/plugin-packer": "^1.0.1",
         "babel-core": "^6.26.0",

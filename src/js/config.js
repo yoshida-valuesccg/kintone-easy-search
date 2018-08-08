@@ -4,7 +4,7 @@ import checkboxHtml from '../html/checkbox.html';
 const PLUGIN_ID = kintone.$PLUGIN_ID;
 const APP_ID = kintone.app.getId();
 
-let config = kintone.plugin.app.getConfig(PLUGIN_ID);
+const config = kintone.plugin.app.getConfig(PLUGIN_ID);
 config.fields = config.fields ? JSON.parse(config.fields) : [];
 
 const targetFieldTypes = [
@@ -25,18 +25,19 @@ const language = {
     zeroRecords: 'データがありません。'
 };
 
-let propertiesCache = {};
+const getPropertiesCache = {};
 
-async function getProperties(appId) {
+function getProperties(appId) {
 
-    let appIdStr = String(appId);
+    const appIdStr = String(appId);
 
-    if (!propertiesCache[appIdStr]) {
-        let { properties } = await kintone.api('/k/v1/app/form/fields', 'GET', { app: appId });
-        propertiesCache[appIdStr] = properties;
+    if (!getPropertiesCache[appIdStr]) {
+        getPropertiesCache[appIdStr] = kintone.api('/k/v1/app/form/fields', 'GET', { app: appId })
+            .then(({ properties }) => properties)
+            .catch(() => ({}));
     }
 
-    return propertiesCache[appIdStr];
+    return getPropertiesCache[appIdStr];
 
 }
 
@@ -47,31 +48,27 @@ async function getFields() {
 
     const fieldsInOrder = [];
 
-    for (let row of layout) {
-        if (row.type === 'ROW') {
-            for (let { code } of row.fields) {
-                if (code) {
-                    fieldsInOrder.push(code);
-                }
-            }
-        } else if (row.type === 'SUBTABLE') {
-            fieldsInOrder.push(row.code);
-        } else if (row.type === 'GROUP') {
-            for (let row of row.layout) {
-                if (row.type === 'ROW') {
-                    for (let { code } of row.fields) {
-                        if (code) {
-                            fieldsInOrder.push(code);
-                        }
+    (function forEachRow(layout) {
+
+        for (const row of layout) {
+            if (row.type === 'ROW') {
+                for (const { code } of row.fields) {
+                    if (code) {
+                        fieldsInOrder.push(code);
                     }
                 }
+            } else if (row.type === 'SUBTABLE') {
+                fieldsInOrder.push(row.code);
+            } else if (row.type === 'GROUP') {
+                forEachRow(row.layout);
             }
         }
-    }
+
+    })(layout);
 
     const fields = [];
 
-    for (let code of fieldsInOrder) {
+    for (const code of fieldsInOrder) {
 
         const prop = properties[code];
         const { type, label } = prop;
@@ -86,16 +83,27 @@ async function getFields() {
 
         } else if (type === 'REFERENCE_TABLE') {
 
-            const { displayFields, relatedApp } = prop.referenceTable;
-            const referenceTable = { code, label, app: relatedApp.app };
+            if (prop.referenceTable) {
 
-            for (const code of displayFields) {
+                const { displayFields, relatedApp } = prop.referenceTable;
+                const referenceTable = { code, label, app: relatedApp.app };
 
                 const properties = await getProperties(relatedApp.app);
-                const { type, label } = properties[code];
-                const field = { code, type, label, referenceTable };
 
-                fields.push(field);
+                for (const code of displayFields) {
+
+                    if (properties[code]) {
+
+                        let type = properties[code].type;
+                        let label = properties[code].label;
+
+                        const field = { code, type, label, referenceTable };
+
+                        fields.push(field);
+
+                    }
+
+                }
 
             }
 
@@ -212,11 +220,13 @@ async function getFields() {
             $checkbox.find('input')
                 .attr('id', `checkbox-${index}`)
                 .on('change', (event) => {
+
                     if ($(event.target).prop('checked')) {
                         $(row).addClass('selected');
                     } else {
                         $(row).removeClass('selected');
                     }
+
                 });
 
             $checkbox.find('label')
@@ -285,7 +295,8 @@ async function getFields() {
             && field.type === type
             && (field.subTable || {}).code === subTable.code
             && (field.referenceTable || {}).code === referenceTable.code
-            && (field.referenceTable || {}).app === referenceTable.app) > -1) {
+            && (field.referenceTable || {}).app === referenceTable.app
+        ) > -1) {
 
             $('.kintoneplugin-input-checkbox', node).find('input')
                 .prop('checked', true)
@@ -295,4 +306,3 @@ async function getFields() {
     }
 
 })();
-

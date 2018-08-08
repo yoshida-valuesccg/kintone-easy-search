@@ -3,8 +3,9 @@ import formHtml from '../html/form.html';
 
 const PLUGIN_ID = kintone.$PLUGIN_ID;
 const Promise = kintone.Promise;
+const APP_ID = kintone.app.getId();
 
-let config = kintone.plugin.app.getConfig(PLUGIN_ID);
+const config = kintone.plugin.app.getConfig(PLUGIN_ID);
 config.fields = config.fields ? JSON.parse(config.fields) : [];
 
 function getUrlParam() {
@@ -35,39 +36,21 @@ function createElementByHtml(html) {
     return div.firstElementChild;
 }
 
+const getPropertiesCache = {};
 
-let propertiesCache = {};
 function getProperties(appId) {
 
-    let appIdStr = String(appId);
+    const appIdStr = String(appId);
 
-    if (!propertiesCache[appIdStr]) {
-        propertiesCache[appIdStr] = kintone.api('/k/v1/form', 'GET', { app: appId })
+    if (!getPropertiesCache[appIdStr]) {
+        getPropertiesCache[appIdStr] = kintone.api('/k/v1/form', 'GET', { app: appId })
             .then(({ properties }) => properties)
-            .catch((error) => []);
+            .catch(() => []);
     }
 
-    return propertiesCache[appIdStr];
+    return getPropertiesCache[appIdStr];
 
 }
-
-// let usersCache = {};
-// function getUsers(keyword) {
-
-//     if (!usersCache[keyword]) {
-//         usersCache[keyword] = kintone.api('/v1/users', 'GET', { codes: [keyword] }).then(({ users }) => {
-//             if (users.length > 0) {
-//                 return users[0].code;
-//             }
-//         }).catch((error) => {
-//             // 閲覧権限がないので空の配列を返す
-//             return null;
-//         });
-//     }
-
-//     return usersCache[keyword];
-
-// }
 
 kintone.events.on('app.record.index.show', (event) => {
 
@@ -88,7 +71,7 @@ kintone.events.on('app.record.index.show', (event) => {
         textEl.focus();
     }
 
-    formEl.onsubmit = (e) => {
+    formEl.onsubmit = () => {
 
         const keyword = textEl.value;
 
@@ -97,75 +80,92 @@ kintone.events.on('app.record.index.show', (event) => {
         }
 
         const promises = [];
-        let query = new Query('or');
+        const query = new Query('or');
 
-        for (let { code, type, subTable, referenceTable } of config.fields) {
+        for (const { code, type, subTable, referenceTable } of config.fields) {
 
             const fieldCode = referenceTable ? `${referenceTable.code}.${code}` : code;
-            const appId = referenceTable ? referenceTable.app : kintone.app.getId();
+            const appId = referenceTable ? referenceTable.app : APP_ID;
 
-            let promise;
+            const promise = Promise.all([getProperties(APP_ID), getProperties(appId)])
+                .then(([thisProperties, properties]) => {
 
-            switch (type) {
-                case 'SINGLE_LINE_TEXT':
-                case 'MULTI_LINE_TEXT':
-                case 'RICH_TEXT':
-                case 'LINK':
-                    query.param(fieldCode, 'like', keyword);
-                    break;
-                case 'NUMBER':
-                    if (subTable || referenceTable) {
-                        query.param(fieldCode, 'in', [keyword]);
-                    } else {
-                        query.param(fieldCode, '=', keyword);
+                    const prop = properties.find((prop) =>
+                        prop.code === code && prop.type === type);
+
+                    if (!prop) {
+                        return;
                     }
-                    break;
-                case 'CHECK_BOX':
-                case 'RADIO_BUTTON':
-                case 'DROP_DOWN':
-                case 'MULTI_SELECT':
 
-                    promise = getProperties(appId).then((properties) => {
+                    if (referenceTable) {
 
-                        let prop = properties.find((prop) => prop.code === code && prop.type === type);
+                        const thisProp = thisProperties.find((prop) =>
+                            prop.code === referenceTable.code && prop.type === 'REFERENCE_TABLE');
 
-                        if (prop) {
-                            let o = prop.options.filter((option) => option.indexOf(keyword) > -1);
-                            if (o.length > 0) {
-                                query.param(fieldCode, 'in', o);
-                            }
+                        if (!thisProp) {
+                            return;
                         }
 
-                    });
+                    }
 
-                    promises.push(promise);
+                    let options;
 
-                    break;
-                // case 'USER_SELECT':
-                // case 'GROUP_SELECT':
-                // case 'ORGANIZATION_SELECT':
-                //     query.param(fieldCode, 'in', [keyword]);
-                //     break;
-            }
+                    switch (type) {
+                        case 'SINGLE_LINE_TEXT':
+                        case 'MULTI_LINE_TEXT':
+                        case 'RICH_TEXT':
+                        case 'LINK':
+
+                            query.param(fieldCode, 'like', keyword);
+
+                            break;
+
+                        case 'NUMBER':
+
+                            if (subTable || referenceTable) {
+                                query.param(fieldCode, 'in', [keyword]);
+                            } else {
+                                query.param(fieldCode, '=', keyword);
+                            }
+
+                            break;
+
+                        case 'CHECK_BOX':
+                        case 'RADIO_BUTTON':
+                        case 'DROP_DOWN':
+                        case 'MULTI_SELECT':
+
+                            options = prop.options.filter((option) => option.indexOf(keyword) > -1);
+                            if (options.length > 0) {
+                                query.param(fieldCode, 'in', options);
+                            }
+
+                            break;
+                    }
+
+                });
+
+            promises.push(promise);
 
         }
 
-        Promise.all(promises).then(() => {
+        Promise.all(promises)
+            .then(() => {
 
-            let url = `?view=${event.viewId}&query=${encodeURIComponent(query.query())}`
-                + `&keyword=${encodeURIComponent(keyword)}` + location.hash;
+                const url = `?view=${event.viewId}&query=${encodeURIComponent(query.query())}`
+                    + `&keyword=${encodeURIComponent(keyword)}${location.hash}`;
 
-            location.href = url;
+                location.href = url;
 
-        });
+            });
 
         return false;
 
     };
 
-    clearEl.onclick = (e) => {
+    clearEl.onclick = () => {
 
-        let url = `?view=${event.viewId}` + location.hash;
+        const url = `?view=${event.viewId}${location.hash}`;
         location.href = url;
 
         return false;

@@ -73,504 +73,297 @@
 "use strict";
 
 
-var getProperties = function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(appId) {
-        var appIdStr, _ref2, properties;
+var getFields = function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var _ref3, properties, _ref4, layout, fieldsInOrder, fields, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, code, prop, type, label, subTable, _iteratorNormalCompletion4, _didIteratorError4, _iteratorError4, _iterator4, _step4, _ref7, _code, _type, _label, _prop$referenceTable, displayFields, relatedApp, referenceTable, _properties, _iteratorNormalCompletion5, _didIteratorError5, _iteratorError5, _iterator5, _step5, _code2, _type2, _label2, field;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
                 switch (_context.prev = _context.next) {
                     case 0:
-                        appIdStr = String(appId);
-
-                        if (propertiesCache[appIdStr]) {
-                            _context.next = 7;
-                            break;
-                        }
-
-                        _context.next = 4;
-                        return kintone.api('/k/v1/app/form/fields', 'GET', { app: appId });
-
-                    case 4:
-                        _ref2 = _context.sent;
-                        properties = _ref2.properties;
-
-                        propertiesCache[appIdStr] = properties;
-
-                    case 7:
-                        return _context.abrupt('return', propertiesCache[appIdStr]);
-
-                    case 8:
-                    case 'end':
-                        return _context.stop();
-                }
-            }
-        }, _callee, this);
-    }));
-
-    return function getProperties(_x) {
-        return _ref.apply(this, arguments);
-    };
-}();
-
-var getFields = function () {
-    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var _ref4, properties, _ref5, layout, fieldsInOrder, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, row, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, _ref7, _code, _iteratorNormalCompletion4, _didIteratorError4, _iteratorError4, _iterator4, _step4, _row, _iteratorNormalCompletion5, _didIteratorError5, _iteratorError5, _iterator5, _step5, _ref8, _code2, fields, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, code, prop, type, label, subTable, _iteratorNormalCompletion6, _didIteratorError6, _iteratorError6, _iterator6, _step6, _ref9, _code3, _type, _label, _prop$referenceTable, displayFields, relatedApp, referenceTable, _iteratorNormalCompletion7, _didIteratorError7, _iteratorError7, _iterator7, _step7, _code4, _properties, _properties$_code, _type2, _label2, field;
-
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-            while (1) {
-                switch (_context2.prev = _context2.next) {
-                    case 0:
-                        _context2.next = 2;
+                        _context.next = 2;
                         return kintone.api('/k/v1/preview/app/form/fields', 'GET', { app: APP_ID });
 
                     case 2:
-                        _ref4 = _context2.sent;
-                        properties = _ref4.properties;
-                        _context2.next = 6;
+                        _ref3 = _context.sent;
+                        properties = _ref3.properties;
+                        _context.next = 6;
                         return kintone.api('/k/v1/preview/app/form/layout', 'GET', { app: APP_ID });
 
                     case 6:
-                        _ref5 = _context2.sent;
-                        layout = _ref5.layout;
+                        _ref4 = _context.sent;
+                        layout = _ref4.layout;
                         fieldsInOrder = [];
-                        _iteratorNormalCompletion = true;
-                        _didIteratorError = false;
-                        _iteratorError = undefined;
-                        _context2.prev = 12;
-                        _iterator = layout[Symbol.iterator]();
 
-                    case 14:
-                        if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-                            _context2.next = 90;
-                            break;
-                        }
 
-                        row = _step.value;
+                        (function forEachRow(layout) {
+                            var _iteratorNormalCompletion = true;
+                            var _didIteratorError = false;
+                            var _iteratorError = undefined;
 
-                        if (!(row.type === 'ROW')) {
-                            _context2.next = 38;
-                            break;
-                        }
+                            try {
 
+                                for (var _iterator = layout[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                                    var row = _step.value;
+
+                                    if (row.type === 'ROW') {
+                                        var _iteratorNormalCompletion2 = true;
+                                        var _didIteratorError2 = false;
+                                        var _iteratorError2 = undefined;
+
+                                        try {
+                                            for (var _iterator2 = row.fields[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                                                var _ref5 = _step2.value;
+                                                var code = _ref5.code;
+
+                                                if (code) {
+                                                    fieldsInOrder.push(code);
+                                                }
+                                            }
+                                        } catch (err) {
+                                            _didIteratorError2 = true;
+                                            _iteratorError2 = err;
+                                        } finally {
+                                            try {
+                                                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                                    _iterator2.return();
+                                                }
+                                            } finally {
+                                                if (_didIteratorError2) {
+                                                    throw _iteratorError2;
+                                                }
+                                            }
+                                        }
+                                    } else if (row.type === 'SUBTABLE') {
+                                        fieldsInOrder.push(row.code);
+                                    } else if (row.type === 'GROUP') {
+                                        forEachRow(row.layout);
+                                    }
+                                }
+                            } catch (err) {
+                                _didIteratorError = true;
+                                _iteratorError = err;
+                            } finally {
+                                try {
+                                    if (!_iteratorNormalCompletion && _iterator.return) {
+                                        _iterator.return();
+                                    }
+                                } finally {
+                                    if (_didIteratorError) {
+                                        throw _iteratorError;
+                                    }
+                                }
+                            }
+                        })(layout);
+
+                        fields = [];
                         _iteratorNormalCompletion3 = true;
                         _didIteratorError3 = false;
                         _iteratorError3 = undefined;
-                        _context2.prev = 20;
+                        _context.prev = 14;
+                        _iterator3 = fieldsInOrder[Symbol.iterator]();
 
-                        for (_iterator3 = row.fields[Symbol.iterator](); !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                            _ref7 = _step3.value;
-                            _code = _ref7.code;
-
-                            if (_code) {
-                                fieldsInOrder.push(_code);
-                            }
-                        }
-                        _context2.next = 28;
-                        break;
-
-                    case 24:
-                        _context2.prev = 24;
-                        _context2.t0 = _context2['catch'](20);
-                        _didIteratorError3 = true;
-                        _iteratorError3 = _context2.t0;
-
-                    case 28:
-                        _context2.prev = 28;
-                        _context2.prev = 29;
-
-                        if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                            _iterator3.return();
-                        }
-
-                    case 31:
-                        _context2.prev = 31;
-
-                        if (!_didIteratorError3) {
-                            _context2.next = 34;
+                    case 16:
+                        if (_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done) {
+                            _context.next = 75;
                             break;
                         }
 
-                        throw _iteratorError3;
+                        code = _step3.value;
+                        prop = properties[code];
+                        type = prop.type, label = prop.label;
 
-                    case 34:
-                        return _context2.finish(31);
-
-                    case 35:
-                        return _context2.finish(28);
-
-                    case 36:
-                        _context2.next = 87;
-                        break;
-
-                    case 38:
-                        if (!(row.type === 'SUBTABLE')) {
-                            _context2.next = 42;
+                        if (!(type === 'SUBTABLE')) {
+                            _context.next = 43;
                             break;
                         }
 
-                        fieldsInOrder.push(row.code);
-                        _context2.next = 87;
-                        break;
-
-                    case 42:
-                        if (!(row.type === 'GROUP')) {
-                            _context2.next = 87;
-                            break;
-                        }
-
+                        subTable = { code: code };
                         _iteratorNormalCompletion4 = true;
                         _didIteratorError4 = false;
                         _iteratorError4 = undefined;
-                        _context2.prev = 46;
-                        _iterator4 = _row.layout[Symbol.iterator]();
+                        _context.prev = 25;
 
-                    case 48:
-                        if (_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done) {
-                            _context2.next = 73;
-                            break;
+
+                        for (_iterator4 = Object.values(prop.fields)[Symbol.iterator](); !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                            _ref7 = _step4.value;
+                            _code = _ref7.code;
+                            _type = _ref7.type;
+                            _label = _ref7.label;
+
+                            fields.push({ code: _code, type: _type, label: _label, subTable: subTable });
                         }
 
-                        _row = _step4.value;
-
-                        if (!(_row.type === 'ROW')) {
-                            _context2.next = 70;
-                            break;
-                        }
-
-                        _iteratorNormalCompletion5 = true;
-                        _didIteratorError5 = false;
-                        _iteratorError5 = undefined;
-                        _context2.prev = 54;
-
-                        for (_iterator5 = _row.fields[Symbol.iterator](); !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-                            _ref8 = _step5.value;
-                            _code2 = _ref8.code;
-
-                            if (_code2) {
-                                fieldsInOrder.push(_code2);
-                            }
-                        }
-                        _context2.next = 62;
+                        _context.next = 33;
                         break;
 
-                    case 58:
-                        _context2.prev = 58;
-                        _context2.t1 = _context2['catch'](54);
-                        _didIteratorError5 = true;
-                        _iteratorError5 = _context2.t1;
-
-                    case 62:
-                        _context2.prev = 62;
-                        _context2.prev = 63;
-
-                        if (!_iteratorNormalCompletion5 && _iterator5.return) {
-                            _iterator5.return();
-                        }
-
-                    case 65:
-                        _context2.prev = 65;
-
-                        if (!_didIteratorError5) {
-                            _context2.next = 68;
-                            break;
-                        }
-
-                        throw _iteratorError5;
-
-                    case 68:
-                        return _context2.finish(65);
-
-                    case 69:
-                        return _context2.finish(62);
-
-                    case 70:
-                        _iteratorNormalCompletion4 = true;
-                        _context2.next = 48;
-                        break;
-
-                    case 73:
-                        _context2.next = 79;
-                        break;
-
-                    case 75:
-                        _context2.prev = 75;
-                        _context2.t2 = _context2['catch'](46);
+                    case 29:
+                        _context.prev = 29;
+                        _context.t0 = _context['catch'](25);
                         _didIteratorError4 = true;
-                        _iteratorError4 = _context2.t2;
+                        _iteratorError4 = _context.t0;
 
-                    case 79:
-                        _context2.prev = 79;
-                        _context2.prev = 80;
+                    case 33:
+                        _context.prev = 33;
+                        _context.prev = 34;
 
                         if (!_iteratorNormalCompletion4 && _iterator4.return) {
                             _iterator4.return();
                         }
 
-                    case 82:
-                        _context2.prev = 82;
+                    case 36:
+                        _context.prev = 36;
 
                         if (!_didIteratorError4) {
-                            _context2.next = 85;
+                            _context.next = 39;
                             break;
                         }
 
                         throw _iteratorError4;
 
-                    case 85:
-                        return _context2.finish(82);
+                    case 39:
+                        return _context.finish(36);
 
-                    case 86:
-                        return _context2.finish(79);
+                    case 40:
+                        return _context.finish(33);
 
-                    case 87:
-                        _iteratorNormalCompletion = true;
-                        _context2.next = 14;
+                    case 41:
+                        _context.next = 72;
                         break;
 
-                    case 90:
-                        _context2.next = 96;
-                        break;
-
-                    case 92:
-                        _context2.prev = 92;
-                        _context2.t3 = _context2['catch'](12);
-                        _didIteratorError = true;
-                        _iteratorError = _context2.t3;
-
-                    case 96:
-                        _context2.prev = 96;
-                        _context2.prev = 97;
-
-                        if (!_iteratorNormalCompletion && _iterator.return) {
-                            _iterator.return();
-                        }
-
-                    case 99:
-                        _context2.prev = 99;
-
-                        if (!_didIteratorError) {
-                            _context2.next = 102;
-                            break;
-                        }
-
-                        throw _iteratorError;
-
-                    case 102:
-                        return _context2.finish(99);
-
-                    case 103:
-                        return _context2.finish(96);
-
-                    case 104:
-                        fields = [];
-                        _iteratorNormalCompletion2 = true;
-                        _didIteratorError2 = false;
-                        _iteratorError2 = undefined;
-                        _context2.prev = 108;
-                        _iterator2 = fieldsInOrder[Symbol.iterator]();
-
-                    case 110:
-                        if (_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done) {
-                            _context2.next = 176;
-                            break;
-                        }
-
-                        code = _step2.value;
-                        prop = properties[code];
-                        type = prop.type, label = prop.label;
-
-                        if (!(type === 'SUBTABLE')) {
-                            _context2.next = 137;
-                            break;
-                        }
-
-                        subTable = { code: code };
-                        _iteratorNormalCompletion6 = true;
-                        _didIteratorError6 = false;
-                        _iteratorError6 = undefined;
-                        _context2.prev = 119;
-
-
-                        for (_iterator6 = Object.values(prop.fields)[Symbol.iterator](); !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-                            _ref9 = _step6.value;
-                            _code3 = _ref9.code;
-                            _type = _ref9.type;
-                            _label = _ref9.label;
-
-                            fields.push({ code: _code3, type: _type, label: _label, subTable: subTable });
-                        }
-
-                        _context2.next = 127;
-                        break;
-
-                    case 123:
-                        _context2.prev = 123;
-                        _context2.t4 = _context2['catch'](119);
-                        _didIteratorError6 = true;
-                        _iteratorError6 = _context2.t4;
-
-                    case 127:
-                        _context2.prev = 127;
-                        _context2.prev = 128;
-
-                        if (!_iteratorNormalCompletion6 && _iterator6.return) {
-                            _iterator6.return();
-                        }
-
-                    case 130:
-                        _context2.prev = 130;
-
-                        if (!_didIteratorError6) {
-                            _context2.next = 133;
-                            break;
-                        }
-
-                        throw _iteratorError6;
-
-                    case 133:
-                        return _context2.finish(130);
-
-                    case 134:
-                        return _context2.finish(127);
-
-                    case 135:
-                        _context2.next = 173;
-                        break;
-
-                    case 137:
+                    case 43:
                         if (!(type === 'REFERENCE_TABLE')) {
-                            _context2.next = 172;
+                            _context.next = 71;
+                            break;
+                        }
+
+                        if (!prop.referenceTable) {
+                            _context.next = 69;
                             break;
                         }
 
                         _prop$referenceTable = prop.referenceTable, displayFields = _prop$referenceTable.displayFields, relatedApp = _prop$referenceTable.relatedApp;
                         referenceTable = { code: code, label: label, app: relatedApp.app };
-                        _iteratorNormalCompletion7 = true;
-                        _didIteratorError7 = false;
-                        _iteratorError7 = undefined;
-                        _context2.prev = 143;
-                        _iterator7 = displayFields[Symbol.iterator]();
-
-                    case 145:
-                        if (_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done) {
-                            _context2.next = 156;
-                            break;
-                        }
-
-                        _code4 = _step7.value;
-                        _context2.next = 149;
+                        _context.next = 49;
                         return getProperties(relatedApp.app);
 
-                    case 149:
-                        _properties = _context2.sent;
-                        _properties$_code = _properties[_code4], _type2 = _properties$_code.type, _label2 = _properties$_code.label;
-                        field = { code: _code4, type: _type2, label: _label2, referenceTable: referenceTable };
+                    case 49:
+                        _properties = _context.sent;
+                        _iteratorNormalCompletion5 = true;
+                        _didIteratorError5 = false;
+                        _iteratorError5 = undefined;
+                        _context.prev = 53;
 
 
-                        fields.push(field);
+                        for (_iterator5 = displayFields[Symbol.iterator](); !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+                            _code2 = _step5.value;
 
-                    case 153:
-                        _iteratorNormalCompletion7 = true;
-                        _context2.next = 145;
-                        break;
 
-                    case 156:
-                        _context2.next = 162;
-                        break;
+                            if (_properties[_code2]) {
+                                _type2 = _properties[_code2].type;
+                                _label2 = _properties[_code2].label;
+                                field = { code: _code2, type: _type2, label: _label2, referenceTable: referenceTable };
 
-                    case 158:
-                        _context2.prev = 158;
-                        _context2.t5 = _context2['catch'](143);
-                        _didIteratorError7 = true;
-                        _iteratorError7 = _context2.t5;
 
-                    case 162:
-                        _context2.prev = 162;
-                        _context2.prev = 163;
-
-                        if (!_iteratorNormalCompletion7 && _iterator7.return) {
-                            _iterator7.return();
+                                fields.push(field);
+                            }
                         }
 
-                    case 165:
-                        _context2.prev = 165;
+                        _context.next = 61;
+                        break;
 
-                        if (!_didIteratorError7) {
-                            _context2.next = 168;
+                    case 57:
+                        _context.prev = 57;
+                        _context.t1 = _context['catch'](53);
+                        _didIteratorError5 = true;
+                        _iteratorError5 = _context.t1;
+
+                    case 61:
+                        _context.prev = 61;
+                        _context.prev = 62;
+
+                        if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                            _iterator5.return();
+                        }
+
+                    case 64:
+                        _context.prev = 64;
+
+                        if (!_didIteratorError5) {
+                            _context.next = 67;
                             break;
                         }
 
-                        throw _iteratorError7;
+                        throw _iteratorError5;
 
-                    case 168:
-                        return _context2.finish(165);
+                    case 67:
+                        return _context.finish(64);
 
-                    case 169:
-                        return _context2.finish(162);
+                    case 68:
+                        return _context.finish(61);
 
-                    case 170:
-                        _context2.next = 173;
+                    case 69:
+                        _context.next = 72;
                         break;
 
-                    case 172:
+                    case 71:
                         fields.push({ code: code, type: type, label: label });
 
-                    case 173:
-                        _iteratorNormalCompletion2 = true;
-                        _context2.next = 110;
+                    case 72:
+                        _iteratorNormalCompletion3 = true;
+                        _context.next = 16;
                         break;
 
-                    case 176:
-                        _context2.next = 182;
+                    case 75:
+                        _context.next = 81;
                         break;
 
-                    case 178:
-                        _context2.prev = 178;
-                        _context2.t6 = _context2['catch'](108);
-                        _didIteratorError2 = true;
-                        _iteratorError2 = _context2.t6;
+                    case 77:
+                        _context.prev = 77;
+                        _context.t2 = _context['catch'](14);
+                        _didIteratorError3 = true;
+                        _iteratorError3 = _context.t2;
 
-                    case 182:
-                        _context2.prev = 182;
-                        _context2.prev = 183;
+                    case 81:
+                        _context.prev = 81;
+                        _context.prev = 82;
 
-                        if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                            _iterator2.return();
+                        if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                            _iterator3.return();
                         }
 
-                    case 185:
-                        _context2.prev = 185;
+                    case 84:
+                        _context.prev = 84;
 
-                        if (!_didIteratorError2) {
-                            _context2.next = 188;
+                        if (!_didIteratorError3) {
+                            _context.next = 87;
                             break;
                         }
 
-                        throw _iteratorError2;
+                        throw _iteratorError3;
 
-                    case 188:
-                        return _context2.finish(185);
+                    case 87:
+                        return _context.finish(84);
 
-                    case 189:
-                        return _context2.finish(182);
+                    case 88:
+                        return _context.finish(81);
 
-                    case 190:
-                        return _context2.abrupt('return', fields.filter(function (_ref6) {
+                    case 89:
+                        return _context.abrupt('return', fields.filter(function (_ref6) {
                             var type = _ref6.type;
                             return targetFieldTypes.includes(type);
                         }));
 
-                    case 191:
+                    case 90:
                     case 'end':
-                        return _context2.stop();
+                        return _context.stop();
                 }
             }
-        }, _callee2, this, [[12, 92, 96, 104], [20, 24, 28, 36], [29,, 31, 35], [46, 75, 79, 87], [54, 58, 62, 70], [63,, 65, 69], [80,, 82, 86], [97,, 99, 103], [108, 178, 182, 190], [119, 123, 127, 135], [128,, 130, 134], [143, 158, 162, 170], [163,, 165, 169], [183,, 185, 189]]);
+        }, _callee, this, [[14, 77, 81, 89], [25, 29, 33, 41], [34,, 36, 40], [53, 57, 61, 69], [62,, 64, 68], [82,, 84, 88]]);
     }));
 
     return function getFields() {
-        return _ref3.apply(this, arguments);
+        return _ref2.apply(this, arguments);
     };
 }();
 
@@ -598,14 +391,30 @@ var language = {
     zeroRecords: 'データがありません。'
 };
 
-var propertiesCache = {};
+var getPropertiesCache = {};
 
-_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+function getProperties(appId) {
+
+    var appIdStr = String(appId);
+
+    if (!getPropertiesCache[appIdStr]) {
+        getPropertiesCache[appIdStr] = kintone.api('/k/v1/app/form/fields', 'GET', { app: appId }).then(function (_ref) {
+            var properties = _ref.properties;
+            return properties;
+        }).catch(function () {
+            return {};
+        });
+    }
+
+    return getPropertiesCache[appIdStr];
+}
+
+_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
     var vm, fields, table, $checkboxAll, _loop, i;
 
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context2.prev = _context2.next) {
                 case 0:
                     vm = new Vue({
                         el: '#config',
@@ -634,11 +443,11 @@ _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
                             }
                         }
                     });
-                    _context3.next = 3;
+                    _context2.next = 3;
                     return getFields();
 
                 case 3:
-                    fields = _context3.sent;
+                    fields = _context2.sent;
                     table = $('#fields').DataTable({
                         language: language,
                         data: fields,
@@ -701,6 +510,7 @@ _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
                             var $checkbox = $('.kintoneplugin-input-checkbox', row);
 
                             $checkbox.find('input').attr('id', 'checkbox-' + index).on('change', function (event) {
+
                                 if ($(event.target).prop('checked')) {
                                     $(row).addClass('selected');
                                 } else {
@@ -784,10 +594,10 @@ _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
 
                 case 15:
                 case 'end':
-                    return _context3.stop();
+                    return _context2.stop();
             }
         }
-    }, _callee3, undefined);
+    }, _callee2, undefined);
 }))();
 
 /***/ }),

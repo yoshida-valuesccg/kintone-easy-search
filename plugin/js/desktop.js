@@ -82,6 +82,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var PLUGIN_ID = kintone.$PLUGIN_ID;
 var Promise = kintone.Promise;
+var APP_ID = kintone.app.getId();
 
 var config = kintone.plugin.app.getConfig(PLUGIN_ID);
 config.fields = config.fields ? JSON.parse(config.fields) : [];
@@ -117,40 +118,23 @@ function createElementByHtml(html) {
     return div.firstElementChild;
 }
 
-var propertiesCache = {};
+var getPropertiesCache = {};
+
 function getProperties(appId) {
 
     var appIdStr = String(appId);
 
-    if (!propertiesCache[appIdStr]) {
-        propertiesCache[appIdStr] = kintone.api('/k/v1/form', 'GET', { app: appId }).then(function (_ref) {
+    if (!getPropertiesCache[appIdStr]) {
+        getPropertiesCache[appIdStr] = kintone.api('/k/v1/form', 'GET', { app: appId }).then(function (_ref) {
             var properties = _ref.properties;
             return properties;
-        }).catch(function (error) {
+        }).catch(function () {
             return [];
         });
     }
 
-    return propertiesCache[appIdStr];
+    return getPropertiesCache[appIdStr];
 }
-
-// let usersCache = {};
-// function getUsers(keyword) {
-
-//     if (!usersCache[keyword]) {
-//         usersCache[keyword] = kintone.api('/v1/users', 'GET', { codes: [keyword] }).then(({ users }) => {
-//             if (users.length > 0) {
-//                 return users[0].code;
-//             }
-//         }).catch((error) => {
-//             // 閲覧権限がないので空の配列を返す
-//             return null;
-//         });
-//     }
-
-//     return usersCache[keyword];
-
-// }
 
 kintone.events.on('app.record.index.show', function (event) {
 
@@ -171,7 +155,7 @@ kintone.events.on('app.record.index.show', function (event) {
         textEl.focus();
     }
 
-    formEl.onsubmit = function (e) {
+    formEl.onsubmit = function () {
 
         var keyword = textEl.value;
 
@@ -185,54 +169,71 @@ kintone.events.on('app.record.index.show', function (event) {
         var _loop = function _loop(code, type, subTable, referenceTable) {
 
             var fieldCode = referenceTable ? referenceTable.code + '.' + code : code;
-            var appId = referenceTable ? referenceTable.app : kintone.app.getId();
+            var appId = referenceTable ? referenceTable.app : APP_ID;
 
-            var promise = void 0;
+            var promise = Promise.all([getProperties(APP_ID), getProperties(appId)]).then(function (_ref3) {
+                var _ref4 = _slicedToArray(_ref3, 2),
+                    thisProperties = _ref4[0],
+                    properties = _ref4[1];
 
-            switch (type) {
-                case 'SINGLE_LINE_TEXT':
-                case 'MULTI_LINE_TEXT':
-                case 'RICH_TEXT':
-                case 'LINK':
-                    query.param(fieldCode, 'like', keyword);
-                    break;
-                case 'NUMBER':
-                    if (subTable || referenceTable) {
-                        query.param(fieldCode, 'in', [keyword]);
-                    } else {
-                        query.param(fieldCode, '=', keyword);
-                    }
-                    break;
-                case 'CHECK_BOX':
-                case 'RADIO_BUTTON':
-                case 'DROP_DOWN':
-                case 'MULTI_SELECT':
+                var prop = properties.find(function (prop) {
+                    return prop.code === code && prop.type === type;
+                });
 
-                    promise = getProperties(appId).then(function (properties) {
+                if (!prop) {
+                    return;
+                }
 
-                        var prop = properties.find(function (prop) {
-                            return prop.code === code && prop.type === type;
-                        });
+                if (referenceTable) {
 
-                        if (prop) {
-                            var o = prop.options.filter(function (option) {
-                                return option.indexOf(keyword) > -1;
-                            });
-                            if (o.length > 0) {
-                                query.param(fieldCode, 'in', o);
-                            }
-                        }
+                    var thisProp = thisProperties.find(function (prop) {
+                        return prop.code === referenceTable.code && prop.type === 'REFERENCE_TABLE';
                     });
 
-                    promises.push(promise);
+                    if (!thisProp) {
+                        return;
+                    }
+                }
 
-                    break;
-                // case 'USER_SELECT':
-                // case 'GROUP_SELECT':
-                // case 'ORGANIZATION_SELECT':
-                //     query.param(fieldCode, 'in', [keyword]);
-                //     break;
-            }
+                var options = void 0;
+
+                switch (type) {
+                    case 'SINGLE_LINE_TEXT':
+                    case 'MULTI_LINE_TEXT':
+                    case 'RICH_TEXT':
+                    case 'LINK':
+
+                        query.param(fieldCode, 'like', keyword);
+
+                        break;
+
+                    case 'NUMBER':
+
+                        if (subTable || referenceTable) {
+                            query.param(fieldCode, 'in', [keyword]);
+                        } else {
+                            query.param(fieldCode, '=', keyword);
+                        }
+
+                        break;
+
+                    case 'CHECK_BOX':
+                    case 'RADIO_BUTTON':
+                    case 'DROP_DOWN':
+                    case 'MULTI_SELECT':
+
+                        options = prop.options.filter(function (option) {
+                            return option.indexOf(keyword) > -1;
+                        });
+                        if (options.length > 0) {
+                            query.param(fieldCode, 'in', options);
+                        }
+
+                        break;
+                }
+            });
+
+            promises.push(promise);
         };
 
         var _iteratorNormalCompletion = true;
@@ -266,7 +267,7 @@ kintone.events.on('app.record.index.show', function (event) {
 
         Promise.all(promises).then(function () {
 
-            var url = '?view=' + event.viewId + '&query=' + encodeURIComponent(query.query()) + ('&keyword=' + encodeURIComponent(keyword)) + location.hash;
+            var url = '?view=' + event.viewId + '&query=' + encodeURIComponent(query.query()) + ('&keyword=' + encodeURIComponent(keyword) + location.hash);
 
             location.href = url;
         });
@@ -274,7 +275,7 @@ kintone.events.on('app.record.index.show', function (event) {
         return false;
     };
 
-    clearEl.onclick = function (e) {
+    clearEl.onclick = function () {
 
         var url = '?view=' + event.viewId + location.hash;
         location.href = url;
