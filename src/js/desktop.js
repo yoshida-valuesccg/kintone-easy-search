@@ -63,7 +63,8 @@ kintone.events.on('app.record.index.show', (event) => {
     const clearEl = formEl.getElementsByClassName('easy-search-clear')[0];
 
     const headerMenuEl = kintone.app.getHeaderMenuSpaceElement();
-    headerMenuEl.prepend(formEl);
+    // headerMenuEl.prepend(formEl);
+    headerMenuEl.insertBefore(formEl, headerMenuEl.childNodes[0]);
 
     if (urlParam.keyword) {
         urlParam.keyword = decodeURIComponent(urlParam.keyword);
