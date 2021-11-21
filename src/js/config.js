@@ -71,14 +71,14 @@ async function getFields() {
     for (const code of fieldsInOrder) {
 
         const prop = properties[code];
-        const { type, label } = prop;
+        const { type, label, options } = prop;
 
         if (type === 'SUBTABLE') {
 
             const subTable = { code };
 
-            for (const { code, type, label } of Object.values(prop.fields)) {
-                fields.push({ code, type, label, subTable });
+            for (const { code, type, label, options } of Object.values(prop.fields)) {
+                fields.push({ code, type, label, options, subTable });
             }
 
         } else if (type === 'REFERENCE_TABLE') {
@@ -96,8 +96,9 @@ async function getFields() {
 
                         let type = properties[code].type;
                         let label = properties[code].label;
+                        let options = properties[code].options;
 
-                        const field = { code, type, label, referenceTable };
+                        const field = { code, type, label, options, referenceTable };
 
                         fields.push(field);
 
@@ -108,7 +109,7 @@ async function getFields() {
             }
 
         } else {
-            fields.push({ code, type, label });
+            fields.push({ code, type, label, options });
         }
 
     }
