@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "version": 1,
+    "version": 2,
     "type": "APP",
     "name": {
         "ja": "かんたん検索プラグイン",
@@ -23,13 +23,13 @@
         "html": "html/config.html",
         "js": [
             "lib/js/polyfill.min.js",
-            "https://js.cybozu.com/jquery/3.2.1/jquery.min.js",
-            "https://js.cybozu.com/vuejs/v2.5.16/vue.min.js",
-            "https://js.cybozu.com/datatables/v1.10.16/js/jquery.dataTables.min.js",
+            "https://js.cybozu.com/jquery/3.6.0/jquery.min.js",
+            "https://js.cybozu.com/vuejs/v2.6.14/vue.min.js",
+            "https://js.cybozu.com/datatables/v1.10.20/js/jquery.dataTables.min.js",
             "js/config.js"
         ],
         "css": [
-            "https://js.cybozu.com/jqueryui/1.12.1/themes/smoothness/jquery-ui.css",
+            "https://js.cybozu.com/jquery-ui/1.13.0/themes/smoothness/jquery-ui.css",
             "lib/css/51-modern-default.css",
             "css/config.css"
         ],

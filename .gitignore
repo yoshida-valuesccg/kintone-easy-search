@@ -65,3 +65,5 @@ private.ppk
 
 # dist
 dist/
+plugin/css/
+plugin/js/

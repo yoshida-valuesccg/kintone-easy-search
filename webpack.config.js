@@ -1,7 +1,34 @@
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const KintonePlugin = require('@kintone/webpack-plugin-kintone-plugin');
 
 module.exports = [
+    {
+        entry: {
+            desktop: './src/css/desktop.scss',
+            config: './src/css/config.scss'
+        },
+        output: {
+            path: path.resolve(__dirname, 'plugin', 'css'),
+            filename: '[name].css'
+        },
+        module: {
+            rules: [
+                {
+                    // 対象となるファイルの拡張子(scss)
+                    // Sassファイルの読み込みとコンパイル
+                    test: /\.s[ac]ss$/i,
+                    use: [
+                        // Creates `style` nodes from JS strings
+                        "style-loader",
+                        // Translates CSS into CommonJS
+                        "css-loader",
+                        // Compiles Sass to CSS
+                        "sass-loader"
+                    ]
+                }
+            ]
+        }
+    },
     {
         entry: {
             desktop: './src/js/desktop.js',
@@ -19,7 +46,7 @@ module.exports = [
                         {
                             loader: 'babel-loader',
                             options: {
-                                presets: 'env'
+                                presets: ['@babel/preset-env']
                             }
                         }
                     ]
@@ -27,10 +54,7 @@ module.exports = [
                 {
                     test: /\.html$/,
                     use: {
-                        loader: 'html-loader',
-                        options: {
-                            attrs: [':data-src']
-                        }
+                        loader: 'html-loader'
                     }
                 },
                 {
@@ -43,33 +67,12 @@ module.exports = [
                 }
             ]
         },
-        plugins: []
-    },
-    {
-        entry: {
-            desktop: './src/css/desktop.scss',
-            config: './src/css/config.scss'
-        },
-        output: {
-            path: path.resolve(__dirname, 'plugin', 'css'),
-            filename: '[name].css'
-        },
-        module: {
-            rules: [
-                {
-                    test: /\.scss$/,
-                    use: ExtractTextPlugin.extract({
-                        fallback: 'style-loader',
-                        use: [
-                            'css-loader?minimize',
-                            'sass-loader'
-                        ]
-                    })
-                }
-            ]
-        },
         plugins: [
-            new ExtractTextPlugin('[name].css')
+            new KintonePlugin({
+                manifestJSONPath: './plugin/manifest.json',
+                privateKeyPath: './private.ppk',
+                pluginZipPath: './dist/plugin.zip'
+            })
         ]
     }
 ];
