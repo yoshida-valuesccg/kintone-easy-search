@@ -79,6 +79,10 @@ async function getFields() {
 
             for (const { code, type, label, options } of Object.values(prop.fields)) {
                 fields.push({ code, type, label, options, subTable });
+                if (!options &&
+                    ['CHECK_BOX', 'RADIO_BUTTON', 'DROP_DOWN', 'MULTI_SELECT'].includes(type)) {
+                    console.error("実装不備! optionsが未定義 " + type);
+                }
             }
 
         } else if (type === 'REFERENCE_TABLE') {
@@ -99,9 +103,11 @@ async function getFields() {
                         let options = properties[code].options;
 
                         const field = { code, type, label, options, referenceTable };
-
                         fields.push(field);
-
+                    }
+                    if (properties[code] && !options &&
+                        ['CHECK_BOX', 'RADIO_BUTTON', 'DROP_DOWN', 'MULTI_SELECT'].includes(properties[code].type)) {
+                        console.error("実装不備! optionsが未定義 " + prop.type + " " + properties[code].type);
                     }
 
                 }
@@ -110,6 +116,10 @@ async function getFields() {
 
         } else {
             fields.push({ code, type, label, options });
+            if (!options &&
+                ['CHECK_BOX', 'RADIO_BUTTON', 'DROP_DOWN', 'MULTI_SELECT'].includes(type)) {
+                console.error("実装不備! optionsが未定義 " + type);
+            }
         }
 
     }
