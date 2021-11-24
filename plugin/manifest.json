@@ -3,7 +3,7 @@
     "version": 2,
     "type": "APP",
     "name": {
-        "ja": "かんたん検索プラグイン",
+        "ja": "かんたん検索プラグイン＠小瀬改修版",
         "en": "Easy Search Plugin"
     },
     "description": {
@@ -16,7 +16,6 @@
             "js/desktop.js"
         ],
         "css": [
-            "css/desktop.css"
         ]
     },
     "config": {
@@ -30,8 +29,7 @@
         ],
         "css": [
             "https://js.cybozu.com/jquery-ui/1.13.0/themes/smoothness/jquery-ui.css",
-            "lib/css/51-modern-default.css",
-            "css/config.css"
+            "lib/css/51-modern-default.css"
         ],
         "required_params": []
     }

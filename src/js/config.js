@@ -1,5 +1,6 @@
 import { fieldTypes } from './fieldTypes';
 import checkboxHtml from '../html/checkbox.html';
+import '../css/config.scss';
 
 const PLUGIN_ID = kintone.$PLUGIN_ID;
 const APP_ID = kintone.app.getId();

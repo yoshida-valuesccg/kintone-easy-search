@@ -1,5 +1,6 @@
 import { Query } from './Query';
 import formHtml from '../html/form.html';
+import '../css/desktop.scss';
 
 const PLUGIN_ID = kintone.$PLUGIN_ID;
 // const Promise = kintone.Promise;
@@ -54,7 +55,7 @@ function createElementByHtml(html) {
 
 kintone.events.on('app.record.index.show', (event) => {
 
-    console.log("debug config=", config)
+    console.log("debug config=", config);
 
     removeElementById('easy-search-form');
 
@@ -156,7 +157,7 @@ kintone.events.on('app.record.index.show', (event) => {
 
         // Promise.all(promises)
         //     .then(() => {
-        console.log("debug query.query()=", query.query())
+        console.log("debug query.query()=", query.query());
         const url = `?view=${event.viewId}&query=${encodeURIComponent(query.query())}`
             + `&keyword=${encodeURIComponent(keyword)}${location.hash}`;
 
