@@ -61,7 +61,7 @@ module.exports = [
             new KintonePlugin({
                 manifestJSONPath: './plugin/manifest.json',
                 privateKeyPath: './private.ppk',
-                pluginZipPath: './dist/plugin.zip'
+                pluginZipPath: './release/plugin.zip'
             })
         ]
     }

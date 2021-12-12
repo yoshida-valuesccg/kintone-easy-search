@@ -7,11 +7,11 @@
   "license": "MIT",
   "scripts": {
     "start": "node scripts/npm-start.js",
-    "upload": "kintone-plugin-uploader dist/plugin.zip --watch --waiting-dialog-ms 3000 ",
+    "upload": "kintone-plugin-uploader release/plugin.zip --watch --waiting-dialog-ms 3000 ",
     "develop": "webpack --mode development --watch",
     "build:dev": "webpack --mode development",
     "build": "webpack --mode production",
-    "package": "kintone-plugin-packer --ppk private.ppk --out dist/plugin.zip plugin",
+    "package": "kintone-plugin-packer --ppk private.ppk --out release/plugin.zip plugin",
     "build:package": "npm run build && npm run package",
     "lint": "eslint src"
   },
