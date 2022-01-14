@@ -35,34 +35,41 @@ module.exports = [
                     ]
                 },
                 {
-                    test: /\.html$/,
-                    use: {
-                        loader: 'html-loader'
-                    }
-                },
-                {
-                    test: /\.(sass|css|scss)$/,
+                    test: /\.(scss)$/i,
                     use: [
                         'style-loader',
-                        {
-                            loader: "css-loader",
-                            options: { url: true }
-                        },
+                        'css-loader',
                         'sass-loader'
+                        // { loader: 'style-loader' },
+                        // {
+                        //     loader: "css-loader",
+                        //     options: {
+                        //         url: true,
+                        //         importLoaders: 2
+                        //     }
+                        // },
+                        // { loader: 'sass-loader' }
                     ]
                 },
                 {
                     test: /\.(png|jpe?g|svg)$/i,
                     type: "asset/inline"
+                },
+                {
+                    test: /\.html$/,
+                    use: {
+                        loader: 'html-loader'
+                    }
                 }
             ]
         },
         plugins: [
             new KintonePlugin({
                 manifestJSONPath: './plugin/manifest.json',
-                privateKeyPath: './private.ppk',
+                privateKeyPath: './gghikjoekddaaedbkcnlmfdhhoeniako.ppk',
                 pluginZipPath: './release/plugin.zip'
             })
-        ]
+        ],
+        target: ["web", "es5"]
     }
 ];
