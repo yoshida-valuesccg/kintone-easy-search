@@ -31,11 +31,11 @@ function removeElementById(id) {
     }
 }
 
-function createElementByHtml(html) {
-    let div = document.createElement('div');
-    div.innerHTML = html;
-    return div.firstElementChild;
-}
+// function createElementByHtml(html) {
+//     let div = document.createElement('div');
+//     div.innerHTML = html;
+//     return div.firstElementChild;
+// }
 
 // const getPropertiesCache = {};
 
@@ -57,18 +57,25 @@ kintone.events.on('app.record.index.show', (event) => {
 
     console.log("debug config=", config);
 
+
+    let headerMenuEl = document.getElementById("easy-search-form-root");
+    if (!headerMenuEl) {
+        headerMenuEl = document.createElement("span");
+        headerMenuEl.id = "easy-search-form-root";
+        const headerMenuSpaceElement = kintone.app.getHeaderMenuSpaceElement();
+        if (headerMenuSpaceElement) {
+            headerMenuSpaceElement.appendChild(headerMenuEl);
+        }
+    }
     removeElementById('easy-search-form');
 
-    const urlParam = getUrlParam();
-
-    const formEl = createElementByHtml(formHtml);
+    headerMenuEl.innerHTML = formHtml;
+    const formEl = headerMenuEl.firstElementChild;
     const textEl = formEl.getElementsByClassName('easy-search-text')[0];
+    // const searchEl = formEl.getElementsByClassName('easy-search-button')[0];
     const clearEl = formEl.getElementsByClassName('easy-search-clear')[0];
 
-    const headerMenuEl = kintone.app.getHeaderMenuSpaceElement();
-    // headerMenuEl.prepend(formEl);
-    headerMenuEl.insertBefore(formEl, headerMenuEl.childNodes[0]);
-
+    const urlParam = getUrlParam();
     if (urlParam.keyword) {
         urlParam.keyword = decodeURIComponent(urlParam.keyword);
         textEl.value = urlParam.keyword;
