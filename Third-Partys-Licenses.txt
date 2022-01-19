@@ -705,28 +705,28 @@
 │  ├─ publisher: Nicholas C. Zakas
 │  ├─ path: ./node_modules/@humanwhocodes/object-schema
 │  └─ licenseFile: ./node_modules/@humanwhocodes/object-schema/LICENSE
-├─ @kintone/plugin-manifest-validator@6.1.9
+├─ @kintone/plugin-manifest-validator@6.1.10
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/kintone/js-sdk
 │  ├─ publisher: Cybozu, Inc.
 │  ├─ url: https://cybozu.co.jp
 │  ├─ path: ./node_modules/@kintone/plugin-manifest-validator
 │  └─ licenseFile: ./node_modules/@kintone/plugin-manifest-validator/LICENSE
-├─ @kintone/plugin-packer@5.0.32
+├─ @kintone/plugin-packer@5.0.33
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/kintone/js-sdk
 │  ├─ publisher: Cybozu, Inc.
 │  ├─ url: https://cybozu.co.jp
 │  ├─ path: ./node_modules/@kintone/plugin-packer
 │  └─ licenseFile: ./node_modules/@kintone/plugin-packer/LICENSE
-├─ @kintone/plugin-uploader@6.0.10
+├─ @kintone/plugin-uploader@6.0.11
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/kintone/js-sdk
 │  ├─ publisher: Cybozu, Inc.
 │  ├─ url: https://cybozu.co.jp
 │  ├─ path: ./node_modules/@kintone/plugin-uploader
 │  └─ licenseFile: ./node_modules/@kintone/plugin-uploader/LICENSE
-├─ @kintone/webpack-plugin-kintone-plugin@5.0.32
+├─ @kintone/webpack-plugin-kintone-plugin@5.0.33
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/kintone/js-sdk
 │  ├─ publisher: Cybozu, Inc.
@@ -939,13 +939,6 @@
 │  ├─ publisher: Evgeny Poberezkin
 │  ├─ path: ./node_modules/ajv
 │  └─ licenseFile: ./node_modules/ajv/LICENSE
-├─ ansi-colors@4.1.1
-│  ├─ licenses: MIT
-│  ├─ repository: https://github.com/doowb/ansi-colors
-│  ├─ publisher: Brian Woodward
-│  ├─ url: https://github.com/doowb
-│  ├─ path: ./node_modules/ansi-colors
-│  └─ licenseFile: ./node_modules/ansi-colors/LICENSE
 ├─ ansi-escapes@4.3.2
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/sindresorhus/ansi-escapes
@@ -1191,7 +1184,7 @@
 │  ├─ email: deadrunk@gmail.com
 │  ├─ path: ./node_modules/chardet
 │  └─ licenseFile: ./node_modules/chardet/LICENSE
-├─ chokidar@3.5.2
+├─ chokidar@3.5.3
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/paulmillr/chokidar
 │  ├─ publisher: Paul Miller
@@ -1425,7 +1418,7 @@
 │  ├─ publisher: Matt Andrews
 │  ├─ path: ./node_modules/denodeify
 │  └─ licenseFile: ./node_modules/denodeify/README.md
-├─ devtools-protocol@0.0.937139
+├─ devtools-protocol@0.0.948846
 │  ├─ licenses: BSD-3-Clause
 │  ├─ repository: https://github.com/ChromeDevTools/devtools-protocol
 │  ├─ publisher: The Chromium Authors
@@ -1478,13 +1471,6 @@
 │  ├─ publisher: Tobias Koppers @sokra
 │  ├─ path: ./node_modules/enhanced-resolve
 │  └─ licenseFile: ./node_modules/enhanced-resolve/LICENSE
-├─ enquirer@2.3.6
-│  ├─ licenses: MIT
-│  ├─ repository: https://github.com/enquirer/enquirer
-│  ├─ publisher: Jon Schlinkert
-│  ├─ url: https://github.com/jonschlinkert
-│  ├─ path: ./node_modules/enquirer
-│  └─ licenseFile: ./node_modules/enquirer/LICENSE
 ├─ envinfo@7.8.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/tabrindle/envinfo
@@ -1571,14 +1557,14 @@
 │  ├─ url: https://github.com/mysticatea
 │  ├─ path: ./node_modules/eslint-utils/node_modules/eslint-visitor-keys
 │  └─ licenseFile: ./node_modules/eslint-utils/node_modules/eslint-visitor-keys/LICENSE
-├─ eslint-visitor-keys@3.1.0
+├─ eslint-visitor-keys@3.2.0
 │  ├─ licenses: Apache-2.0
 │  ├─ repository: https://github.com/eslint/eslint-visitor-keys
 │  ├─ publisher: Toru Nagashima
 │  ├─ url: https://github.com/mysticatea
 │  ├─ path: ./node_modules/eslint-visitor-keys
 │  └─ licenseFile: ./node_modules/eslint-visitor-keys/LICENSE
-├─ eslint@8.6.0
+├─ eslint@8.7.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/eslint/eslint
 │  ├─ publisher: Nicholas C. Zakas
@@ -1891,8 +1877,8 @@
 │  ├─ publisher: Sindre Sorhus
 │  ├─ email: sindresorhus@gmail.com
 │  ├─ url: sindresorhus.com
-│  ├─ path: ./node_modules/inquirer/node_modules/has-flag
-│  └─ licenseFile: ./node_modules/inquirer/node_modules/has-flag/license
+│  ├─ path: ./node_modules/jest-worker/node_modules/has-flag
+│  └─ licenseFile: ./node_modules/jest-worker/node_modules/has-flag/license
 ├─ has-symbols@1.0.2
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/inspect-js/has-symbols
@@ -1997,6 +1983,12 @@
 │  ├─ path: ./node_modules/ieee754
 │  └─ licenseFile: ./node_modules/ieee754/LICENSE
 ├─ ignore@4.0.6
+│  ├─ licenses: MIT
+│  ├─ repository: https://github.com/kaelzhang/node-ignore
+│  ├─ publisher: kael
+│  ├─ path: ./node_modules/@eslint/eslintrc/node_modules/ignore
+│  └─ licenseFile: ./node_modules/@eslint/eslintrc/node_modules/ignore/LICENSE-MIT
+├─ ignore@5.2.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/kaelzhang/node-ignore
 │  ├─ publisher: kael
@@ -3033,7 +3025,7 @@
 │  ├─ url: https://mathiasbynens.be/
 │  ├─ path: ./node_modules/punycode
 │  └─ licenseFile: ./node_modules/punycode/LICENSE-MIT.txt
-├─ puppeteer@13.0.1
+├─ puppeteer@13.1.1
 │  ├─ licenses: Apache-2.0
 │  ├─ repository: https://github.com/puppeteer/puppeteer
 │  ├─ publisher: The Chromium Authors
@@ -3269,7 +3261,7 @@
 │  ├─ publisher: J. Tangelder
 │  ├─ path: ./node_modules/sass-loader
 │  └─ licenseFile: ./node_modules/sass-loader/LICENSE
-├─ sass@1.48.0
+├─ sass@1.49.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/sass/dart-sass
 │  ├─ publisher: Natalie Weizenbaum
@@ -3896,4 +3888,3 @@
    ├─ email: thejoshwolfe@gmail.com
    ├─ path: ./node_modules/yazl
    └─ licenseFile: ./node_modules/yazl/LICENSE
-
