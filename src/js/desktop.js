@@ -55,7 +55,7 @@ function removeElementById(id) {
 
 kintone.events.on('app.record.index.show', (event) => {
 
-    console.log("debug config=", config);
+    // console.log("Easy search debug config=", config);
 
 
     let headerMenuEl = document.getElementById("easy-search-form-root");
