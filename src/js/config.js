@@ -1,3 +1,6 @@
+/* eslint-disable indent */
+/* eslint-disable max-len */
+/* eslint-disable new-cap */
 import { fieldTypes } from './fieldTypes';
 import checkboxHtml from '../html/checkbox.html';
 import '../css/config.scss';
@@ -17,7 +20,8 @@ const targetFieldTypes = [
     'CHECK_BOX',
     'RADIO_BUTTON',
     'DROP_DOWN',
-    'MULTI_SELECT'
+    'MULTI_SELECT',
+    'RECORD_NUMBER'
 ];
 
 const language = {
@@ -53,7 +57,8 @@ async function getFields() {
 
         for (const row of layout) {
             if (row.type === 'ROW') {
-                for (const { code } of row.fields) {
+                for (const { code }
+                    of row.fields) {
                     if (code) {
                         fieldsInOrder.push(code);
                     }
@@ -78,10 +83,10 @@ async function getFields() {
 
             const subTable = { code };
 
-            for (const { code, type, label, options } of Object.values(prop.fields)) {
+            for (const { code, type, label, options }
+                of Object.values(prop.fields)) {
                 fields.push({ code, type, label, options, subTable });
-                if (!options &&
-                    ['CHECK_BOX', 'RADIO_BUTTON', 'DROP_DOWN', 'MULTI_SELECT'].includes(type)) {
+                if (!options && ['CHECK_BOX', 'RADIO_BUTTON', 'DROP_DOWN', 'MULTI_SELECT'].includes(type)) {
                     console.error("実装不備! optionsが未定義 " + type);
                 }
             }
@@ -106,8 +111,7 @@ async function getFields() {
                         const field = { code, type, label, options, referenceTable };
                         fields.push(field);
                     }
-                    if (properties[code] && !options &&
-                        ['CHECK_BOX', 'RADIO_BUTTON', 'DROP_DOWN', 'MULTI_SELECT'].includes(properties[code].type)) {
+                    if (properties[code] && !options && ['CHECK_BOX', 'RADIO_BUTTON', 'DROP_DOWN', 'MULTI_SELECT'].includes(properties[code].type)) {
                         console.error("実装不備! optionsが未定義 " + prop.type + " " + properties[code].type);
                     }
 
@@ -117,8 +121,7 @@ async function getFields() {
 
         } else {
             fields.push({ code, type, label, options });
-            if (!options &&
-                ['CHECK_BOX', 'RADIO_BUTTON', 'DROP_DOWN', 'MULTI_SELECT'].includes(type)) {
+            if (!options && ['CHECK_BOX', 'RADIO_BUTTON', 'DROP_DOWN', 'MULTI_SELECT'].includes(type)) {
                 console.error("実装不備! optionsが未定義 " + type);
             }
         }
@@ -131,6 +134,7 @@ async function getFields() {
 
 (async () => {
 
+    // eslint-disable-next-line no-unused-vars
     const vm = new Vue({
         el: '#config',
         data: {},
@@ -210,10 +214,9 @@ async function getFields() {
             {
                 targets: 5,
                 title: 'テーブル・関連レコード一覧',
-                data: (field) => field.subTable
-                    ? field.subTable.code
-                    : field.referenceTable
-                        ? field.referenceTable.label : '',
+                data: (field) => field.subTable ?
+                    field.subTable.code : field.referenceTable ?
+                        field.referenceTable.label : '',
                 defaultContent: '',
                 width: '35%',
                 orderable: false
@@ -222,7 +225,9 @@ async function getFields() {
         scrollY: '400px',
         scrollCollapse: true,
         paging: false,
-        order: [[1, 'asc']],
+        order: [
+            [1, 'asc']
+        ],
         info: false,
         searching: true,
         createdRow: (row, data, index) => {
@@ -303,11 +308,11 @@ async function getFields() {
 
         const { code, type, subTable = {}, referenceTable = {} } = field;
 
-        if (config.fields.findIndex((field) => field.code === code
-            && field.type === type
-            && (field.subTable || {}).code === subTable.code
-            && (field.referenceTable || {}).code === referenceTable.code
-            && (field.referenceTable || {}).app === referenceTable.app
+        if (config.fields.findIndex((field) => field.code === code &&
+            field.type === type &&
+            (field.subTable || {}).code === subTable.code &&
+            (field.referenceTable || {}).code === referenceTable.code &&
+            (field.referenceTable || {}).app === referenceTable.app
         ) > -1) {
 
             $('.kintoneplugin-input-checkbox', node).find('input')

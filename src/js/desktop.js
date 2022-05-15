@@ -93,7 +93,8 @@ kintone.events.on('app.record.index.show', (event) => {
         // const promises = [];
         const query = new Query('or');
 
-        for (const { code, type, options, subTable, referenceTable } of config.fields) {
+        for (const { code, type, options, subTable, referenceTable }
+            of config.fields) {
 
             const fieldCode = referenceTable ? `${referenceTable.code}.${code}` : code;
             // const appId = referenceTable ? referenceTable.app : APP_ID;
@@ -140,7 +141,15 @@ kintone.events.on('app.record.index.show', (event) => {
                     }
 
                     break;
+                case 'RECORD_NUMBER':
 
+                    if (referenceTable) {
+                        query.param(fieldCode, 'in', [keyword]);
+                    } else {
+                        query.param(fieldCode, '=', keyword);
+                    }
+
+                    break;
                 case 'CHECK_BOX':
                 case 'RADIO_BUTTON':
                 case 'DROP_DOWN':
@@ -154,6 +163,7 @@ kintone.events.on('app.record.index.show', (event) => {
                         }
                     }
                     break;
+
             }
 
             //         });
@@ -165,8 +175,8 @@ kintone.events.on('app.record.index.show', (event) => {
         // Promise.all(promises)
         //     .then(() => {
         console.log("debug query.query()=", query.query());
-        const url = `?view=${event.viewId}&query=${encodeURIComponent(query.query())}`
-            + `&keyword=${encodeURIComponent(keyword)}${location.hash}`;
+        const url = `?view=${event.viewId}&query=${encodeURIComponent(query.query())}` +
+            `&keyword=${encodeURIComponent(keyword)}${location.hash}`;
 
         location.href = url;
 
