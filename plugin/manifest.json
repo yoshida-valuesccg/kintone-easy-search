@@ -22,13 +22,14 @@
         "html": "html/config.html",
         "js": [
             "lib/js/polyfill.min.js",
-            "https://js.cybozu.com/jquery/3.6.0/jquery.min.js",
-            "https://js.cybozu.com/vuejs/v2.6.14/vue.min.js",
+            "https://js.cybozu.com/jquery/3.7.0/jquery.min.js",
+            "https://js.cybozu.com/vuejs/v2.7.14/vue.min.js",
             "https://js.cybozu.com/datatables/v1.10.20/js/jquery.dataTables.min.js",
             "js/config.js"
         ],
         "css": [
-            "https://js.cybozu.com/jquery-ui/1.13.0/themes/smoothness/jquery-ui.css",
+            "https://js.cybozu.com/datatables/v1.10.20/css/jquery.dataTables.min.css",
+            "https://js.cybozu.com/jqueryui/1.13.2/themes/smoothness/jquery-ui.css",
             "lib/css/51-modern-default.css"
         ],
         "required_params": []
