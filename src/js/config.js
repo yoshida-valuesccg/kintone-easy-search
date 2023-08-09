@@ -37,7 +37,7 @@ function getProperties(appId) {
     const appIdStr = String(appId);
 
     if (!getPropertiesCache[appIdStr]) {
-        getPropertiesCache[appIdStr] = kintone.api('/k/v1/app/form/fields', 'GET', { app: appId })
+        getPropertiesCache[appIdStr] = kintone.api(kintone.api.url('/k/v1/app/form/fields', true), 'GET', { app: appId })
             .then(({ properties }) => properties)
             .catch(() => ({}));
     }
@@ -48,8 +48,8 @@ function getProperties(appId) {
 
 async function getFields() {
 
-    let { properties } = await kintone.api('/k/v1/preview/app/form/fields', 'GET', { app: APP_ID });
-    let { layout } = await kintone.api('/k/v1/preview/app/form/layout', 'GET', { app: APP_ID });
+    let { properties } = await kintone.api(kintone.api.url('/k/v1/preview/app/form/fields', true), 'GET', { app: APP_ID });
+    let { layout } = await kintone.api(kintone.api.url('/k/v1/preview/app/form/layout', true), 'GET', { app: APP_ID });
 
     const fieldsInOrder = [];
 
