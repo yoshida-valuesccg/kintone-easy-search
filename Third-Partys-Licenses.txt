@@ -753,13 +753,13 @@
 │  ├─ publisher: Toru Nagashima
 │  ├─ path: ./node_modules/@eslint-community/regexpp
 │  └─ licenseFile: ./node_modules/@eslint-community/regexpp/LICENSE
-├─ @eslint/eslintrc@2.1.1
+├─ @eslint/eslintrc@2.1.2
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/eslint/eslintrc
 │  ├─ publisher: Nicholas C. Zakas
 │  ├─ path: ./node_modules/@eslint/eslintrc
 │  └─ licenseFile: ./node_modules/@eslint/eslintrc/LICENSE
-├─ @eslint/js@8.46.0
+├─ @eslint/js@8.47.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/eslint/eslint
 │  ├─ path: ./node_modules/@eslint/js
@@ -1073,8 +1073,8 @@
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/ajv-validator/ajv
 │  ├─ publisher: Evgeny Poberezkin
-│  ├─ path: ./node_modules/terser-webpack-plugin/node_modules/ajv
-│  └─ licenseFile: ./node_modules/terser-webpack-plugin/node_modules/ajv/LICENSE
+│  ├─ path: ./node_modules/@eslint/eslintrc/node_modules/ajv
+│  └─ licenseFile: ./node_modules/@eslint/eslintrc/node_modules/ajv/LICENSE
 ├─ ajv@8.12.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/ajv-validator/ajv
@@ -1686,14 +1686,14 @@
 │  ├─ repository: https://github.com/eslint/eslint-scope
 │  ├─ path: ./node_modules/eslint-scope
 │  └─ licenseFile: ./node_modules/eslint-scope/LICENSE
-├─ eslint-visitor-keys@3.4.2
+├─ eslint-visitor-keys@3.4.3
 │  ├─ licenses: Apache-2.0
 │  ├─ repository: https://github.com/eslint/eslint-visitor-keys
 │  ├─ publisher: Toru Nagashima
 │  ├─ url: https://github.com/mysticatea
 │  ├─ path: ./node_modules/eslint-visitor-keys
 │  └─ licenseFile: ./node_modules/eslint-visitor-keys/LICENSE
-├─ eslint@8.46.0
+├─ eslint@8.47.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/eslint/eslint
 │  ├─ publisher: Nicholas C. Zakas
@@ -1975,6 +1975,14 @@
 │  ├─ publisher: Sindre Sorhus
 │  ├─ email: sindresorhus@gmail.com
 │  ├─ url: https://sindresorhus.com
+│  ├─ path: ./node_modules/eslint/node_modules/globals
+│  └─ licenseFile: ./node_modules/eslint/node_modules/globals/license
+├─ globals@13.21.0
+│  ├─ licenses: MIT
+│  ├─ repository: https://github.com/sindresorhus/globals
+│  ├─ publisher: Sindre Sorhus
+│  ├─ email: sindresorhus@gmail.com
+│  ├─ url: https://sindresorhus.com
 │  ├─ path: ./node_modules/@eslint/eslintrc/node_modules/globals
 │  └─ licenseFile: ./node_modules/@eslint/eslintrc/node_modules/globals/license
 ├─ graceful-fs@4.2.11
@@ -2109,7 +2117,7 @@
 │  ├─ url: https://feross.org
 │  ├─ path: ./node_modules/ieee754
 │  └─ licenseFile: ./node_modules/ieee754/LICENSE
-├─ ignore@5.2.0
+├─ ignore@5.2.4
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/kaelzhang/node-ignore
 │  ├─ publisher: kael
@@ -3453,7 +3461,7 @@
 │  ├─ publisher: J. Tangelder
 │  ├─ path: ./node_modules/sass-loader
 │  └─ licenseFile: ./node_modules/sass-loader/LICENSE
-├─ sass@1.64.2
+├─ sass@1.66.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/sass/dart-sass
 │  ├─ publisher: Natalie Weizenbaum
