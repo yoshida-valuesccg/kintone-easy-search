@@ -65,3 +65,10 @@ private.ppk
 
 # dist
 dist/
+plugin/css/
+plugin/js/
+_memo.txt
+upload.bat
+upload-2.bat
+dev_*
+dev-*

@@ -1,5 +1,9 @@
+/* eslint-disable indent */
+/* eslint-disable max-len */
+/* eslint-disable new-cap */
 import { fieldTypes } from './fieldTypes';
 import checkboxHtml from '../html/checkbox.html';
+import '../css/config.scss';
 
 const PLUGIN_ID = kintone.$PLUGIN_ID;
 const APP_ID = kintone.app.getId();
@@ -16,7 +20,8 @@ const targetFieldTypes = [
     'CHECK_BOX',
     'RADIO_BUTTON',
     'DROP_DOWN',
-    'MULTI_SELECT'
+    'MULTI_SELECT',
+    'RECORD_NUMBER'
 ];
 
 const language = {
@@ -32,7 +37,7 @@ function getProperties(appId) {
     const appIdStr = String(appId);
 
     if (!getPropertiesCache[appIdStr]) {
-        getPropertiesCache[appIdStr] = kintone.api('/k/v1/app/form/fields', 'GET', { app: appId })
+        getPropertiesCache[appIdStr] = kintone.api(kintone.api.url('/k/v1/app/form/fields', true), 'GET', { app: appId })
             .then(({ properties }) => properties)
             .catch(() => ({}));
     }
@@ -43,8 +48,8 @@ function getProperties(appId) {
 
 async function getFields() {
 
-    let { properties } = await kintone.api('/k/v1/preview/app/form/fields', 'GET', { app: APP_ID });
-    let { layout } = await kintone.api('/k/v1/preview/app/form/layout', 'GET', { app: APP_ID });
+    let { properties } = await kintone.api(kintone.api.url('/k/v1/preview/app/form/fields', true), 'GET', { app: APP_ID });
+    let { layout } = await kintone.api(kintone.api.url('/k/v1/preview/app/form/layout', true), 'GET', { app: APP_ID });
 
     const fieldsInOrder = [];
 
@@ -52,7 +57,8 @@ async function getFields() {
 
         for (const row of layout) {
             if (row.type === 'ROW') {
-                for (const { code } of row.fields) {
+                for (const { code }
+                    of row.fields) {
                     if (code) {
                         fieldsInOrder.push(code);
                     }
@@ -71,14 +77,18 @@ async function getFields() {
     for (const code of fieldsInOrder) {
 
         const prop = properties[code];
-        const { type, label } = prop;
+        const { type, label, options } = prop;
 
         if (type === 'SUBTABLE') {
 
             const subTable = { code };
 
-            for (const { code, type, label } of Object.values(prop.fields)) {
-                fields.push({ code, type, label, subTable });
+            for (const { code, type, label, options }
+                of Object.values(prop.fields)) {
+                fields.push({ code, type, label, options, subTable });
+                if (!options && ['CHECK_BOX', 'RADIO_BUTTON', 'DROP_DOWN', 'MULTI_SELECT'].includes(type)) {
+                    console.error("実装不備! optionsが未定義 " + type);
+                }
             }
 
         } else if (type === 'REFERENCE_TABLE') {
@@ -96,11 +106,13 @@ async function getFields() {
 
                         let type = properties[code].type;
                         let label = properties[code].label;
+                        let options = properties[code].options;
 
-                        const field = { code, type, label, referenceTable };
-
+                        const field = { code, type, label, options, referenceTable };
                         fields.push(field);
-
+                    }
+                    if (properties[code] && !options && ['CHECK_BOX', 'RADIO_BUTTON', 'DROP_DOWN', 'MULTI_SELECT'].includes(properties[code].type)) {
+                        console.error("実装不備! optionsが未定義 " + prop.type + " " + properties[code].type);
                     }
 
                 }
@@ -108,7 +120,10 @@ async function getFields() {
             }
 
         } else {
-            fields.push({ code, type, label });
+            fields.push({ code, type, label, options });
+            if (!options && ['CHECK_BOX', 'RADIO_BUTTON', 'DROP_DOWN', 'MULTI_SELECT'].includes(type)) {
+                console.error("実装不備! optionsが未定義 " + type);
+            }
         }
 
     }
@@ -119,6 +134,7 @@ async function getFields() {
 
 (async () => {
 
+    // eslint-disable-next-line no-unused-vars
     const vm = new Vue({
         el: '#config',
         data: {},
@@ -198,10 +214,9 @@ async function getFields() {
             {
                 targets: 5,
                 title: 'テーブル・関連レコード一覧',
-                data: (field) => field.subTable
-                    ? field.subTable.code
-                    : field.referenceTable
-                        ? field.referenceTable.label : '',
+                data: (field) => field.subTable ?
+                    field.subTable.code : field.referenceTable ?
+                        field.referenceTable.label : '',
                 defaultContent: '',
                 width: '35%',
                 orderable: false
@@ -210,7 +225,9 @@ async function getFields() {
         scrollY: '400px',
         scrollCollapse: true,
         paging: false,
-        order: [[1, 'asc']],
+        order: [
+            [1, 'asc']
+        ],
         info: false,
         searching: true,
         createdRow: (row, data, index) => {
@@ -291,11 +308,11 @@ async function getFields() {
 
         const { code, type, subTable = {}, referenceTable = {} } = field;
 
-        if (config.fields.findIndex((field) => field.code === code
-            && field.type === type
-            && (field.subTable || {}).code === subTable.code
-            && (field.referenceTable || {}).code === referenceTable.code
-            && (field.referenceTable || {}).app === referenceTable.app
+        if (config.fields.findIndex((field) => field.code === code &&
+            field.type === type &&
+            (field.subTable || {}).code === subTable.code &&
+            (field.referenceTable || {}).code === referenceTable.code &&
+            (field.referenceTable || {}).app === referenceTable.app
         ) > -1) {
 
             $('.kintoneplugin-input-checkbox', node).find('input')
